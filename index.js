@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
-const userRoute = require("./routes/userRoute")
+const userRoute = require("./routes/userRoute.js");
+const authRoute = require("./routes/authRoute.js")
 
 mongoose
   .connect(process.env.MONGODATABASE)
@@ -10,8 +11,21 @@ mongoose
   .catch((err) => console.log("Unable to connect database ..." , err));
 
 const app = express();
+app.use(express.json());
 
 app.use('/api' , userRoute);
+app.use('/api',authRoute);
+
+
+app.use((err,req,res,next)=>{
+  const statuscode = err.statuscode || 500;
+  const message = err.message || 'Internal Server Error';
+  return res.status(statuscode).json({
+    success : false,
+    statuscode,
+    message
+  })
+});
 
 
 app.listen(3000, () => {
