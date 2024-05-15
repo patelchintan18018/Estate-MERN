@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userSlice";
+import OAuth from "../components/OAuth";
 
 export default function LogIn() {
   const [formdata, setformdata] = useState({
@@ -67,6 +68,7 @@ export default function LogIn() {
           <button className="bg-slate-700 rounded-lg text-white p-3 uppercase hover:opacity-95 disabled:opacity-80">
             Log in
           </button>
+          <OAuth/>
         </form>
         {error && <p className="my-3 text-left text-red-500">{error}</p>}
         <p className="my-3 text-left">

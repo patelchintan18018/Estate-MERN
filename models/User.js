@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    photoURL :{
+        type:String,
+        default : "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png"
+    },
 }, {timestamps : true});
 
 
