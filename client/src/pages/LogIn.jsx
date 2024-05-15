@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { loginStart, loginSuccess, loginFailure } from "../redux/userSlice";
 
 export default function LogIn() {
   const [formdata, setformdata] = useState({
@@ -9,29 +10,34 @@ export default function LogIn() {
     password: "",
   });
 
-  const [error, seterror] = useState(null);
-  const navigate = useNavigate()
+  const { error, loading } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     setformdata({ ...formdata, [e.target.name]: e.target.value });
   };
-  console.log(formdata)
+  // console.log(formdata)
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    dispatch(loginStart());
     try {
       const { data } = await axios.post("/api/login", {
         email: formdata.email,
         password: formdata.password,
       });
-      console.log(data);
+      // console.log(data);
       if (data.success) {
         alert(data.message);
-        navigate('/');
+        console.log(data.userData);
+        dispatch(loginSuccess(data.userData));
+        navigate("/");
       } else {
-        seterror(data.message);
+        console.log(data)
+        dispatch(loginFailure(data.message));
       }
     } catch (error) {
-      console.log(error);
+      dispatch(loginFailure(error.response.data.message))
     }
   };
 
@@ -39,7 +45,7 @@ export default function LogIn() {
     <>
       <div className="text-center mt-7 p-4 max-w-lg mx-auto">
         <h1 className="text-3xl font-bold my-7 text-slate-800">Log In</h1>
-        <form onClick={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"
             placeholder="email"
@@ -64,8 +70,8 @@ export default function LogIn() {
         </form>
         {error && <p className="my-3 text-left text-red-500">{error}</p>}
         <p className="my-3 text-left">
-          Create an account ?{" "}
-          <Link to="/signin" className="text-blue-700 hover:font-bold">
+          Don't have an account ?{" "}
+          <Link to="/signup" className="text-blue-700 hover:font-bold">
             Sign in
           </Link>
         </p>
