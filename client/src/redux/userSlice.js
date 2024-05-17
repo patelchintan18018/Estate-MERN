@@ -11,7 +11,8 @@ const userSlice = createSlice({
     initialState,
     reducers :{
         loginStart :(state)=>{
-            state.loading = true
+            state.loading = true,
+            state.error = null
         },
         loginSuccess:(state,action)=>{
             state.currentUser = action.payload,
