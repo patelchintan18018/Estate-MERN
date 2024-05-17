@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
+
+const path = require("path");
+const cors = require("cors")
+
 const userRoute = require("./routes/userRoute.js");
 const authRoute = require("./routes/authRoute.js")
 
@@ -12,10 +16,15 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use('/api' , userRoute);
 app.use('/api',authRoute);
 
+app.use(express.static(path.join(__dirname, "./client/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/dist/index.html"));
+});
 
 app.use((err,req,res,next)=>{
   const statuscode = err.statuscode || 500;
