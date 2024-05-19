@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
+import {Link} from "react-router-dom"
+import { 
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
@@ -119,10 +120,11 @@ export default function Profile() {
           <button className="p-3 bg-slate-700 uppercase hover:opacity-95 text-white rounded-lg">
             update
           </button>
+          <Link to='/create-listing' className="p-3 bg-green-700 rounded-lg text-white uppercase text-center hover:opacity-95">Create Listing</Link>
         </form>
-        <div className="flex justify-between text-red-600 my-3 font-semibold cursor-pointer">
-          <span onClick={handleDelete}>Delete account</span>
-          <span onClick={handleSignOut}>Sign out</span>
+        <div className="flex justify-between text-red-600 my-5 font-semibold cursor-pointer">
+          <span onClick={handleDelete} className="hover:scale-105">Delete account</span>
+          <span onClick={handleSignOut} className="hover:scale-105">Sign out</span>
         </div>
       </div>
     </>
