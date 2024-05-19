@@ -104,3 +104,15 @@ exports.googleLogin = async (req, res) => {
     console.log(error);
   }
 };
+
+
+
+exports.signOut = async(req,res,next)=>{
+  try {
+    res.clearCookie('token');
+  res.status(200).json({success:true, message:'User Sign out successfully !!'})
+  } catch (error) {
+    next(error)
+  }
+  
+}

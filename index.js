@@ -7,7 +7,8 @@ const path = require("path");
 const cors = require("cors")
 
 const userRoute = require("./routes/userRoute.js");
-const authRoute = require("./routes/authRoute.js")
+const authRoute = require("./routes/authRoute.js");
+const cookieParser = require("cookie-parser");
 
 mongoose
   .connect(process.env.MONGODATABASE)
@@ -15,10 +16,12 @@ mongoose
   .catch((err) => console.log("Unable to connect database ..." , err));
 
 const app = express();
+
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors());
 
-app.use('/api' , userRoute);
+app.use('/api/user' , userRoute);
 app.use('/api',authRoute);
 
 app.use(express.static(path.join(__dirname, "./client/dist")));
