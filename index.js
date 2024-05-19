@@ -8,6 +8,9 @@ const cors = require("cors")
 
 const userRoute = require("./routes/userRoute.js");
 const authRoute = require("./routes/authRoute.js");
+const listingRoute = require("./routes/listingRoute.js")
+
+
 const cookieParser = require("cookie-parser");
 
 mongoose
@@ -23,6 +26,7 @@ app.use(cors());
 
 app.use('/api/user' , userRoute);
 app.use('/api',authRoute);
+app.use('/api/listing', listingRoute)
 
 app.use(express.static(path.join(__dirname, "./client/dist")));
 app.get("*", (req, res) => {
