@@ -89,6 +89,7 @@ export default function Profile() {
           <img
             className="w-24 h-24 object-cover self-center rounded-full cursor-pointer"
             src={currentUser.photoURL}
+            onError={(e) => {e.target.onError=null; e.target.src ='https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png'}}
             alt="profile-image"
           />
           <input

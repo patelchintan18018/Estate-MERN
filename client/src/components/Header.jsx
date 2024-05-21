@@ -23,7 +23,7 @@ export default function Header() {
                     <Link to='/' className='hidden sm:inline text-slate-700 font-semibold hover:font-bold'><li>Home</li></Link>
                     <Link to='/about' className='hidden sm:inline text-slate-700 font-semibold hover:font-bold'><li>About</li></Link>
                     <Link to='/profile'>
-                    {currentUser ? <img className='w-7 h-7 lg:w-10 lg:h-10 rounded-full object-cover' src={currentUser.photoURL} alt="profile" /> : <Link to='/signup' className='text-slate-700 font-semibold hover:font-bold'><li>Sign In</li></Link> }
+                    {currentUser ? <img className='w-7 h-7 lg:w-10 lg:h-10 rounded-full object-cover' src={currentUser.photoURL} alt="profile" onError={(e) => {e.target.onError=null; e.target.src ='https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png'}} /> : <Link to='/signup' className='text-slate-700 font-semibold hover:font-bold'><li>Sign In</li></Link> }
                     </Link>
                     
                 </ul>

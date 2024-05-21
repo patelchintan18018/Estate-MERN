@@ -1,6 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
 
 export default function CreateListing() {
+  const [files, setfiles] = useState([]);
+  const [formData, setformData] = useState({
+    imageUrls: [],
+  });
+  const [imageUploadError, setimageUploadError] = useState(false);
+  const [uploading, setuploading] = useState(false);
+  console.log(formData);
+
+  const handleImageUpload = () => {
+    const promises = [];
+
+    if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
+      setimageUploadError(false);
+      setuploading(true);
+      for (let i = 0; i < files.length; i++) {
+        promises.push(storeImage(files[i]));
+      }
+
+      Promise.all(promises)
+        .then((urls) => {
+          setformData({
+            ...formData,
+            imageUrls: formData.imageUrls.concat(urls),
+          });
+          setimageUploadError(false);
+          setuploading(false);
+        })
+        .catch((err) => {
+          setimageUploadError("Image upload failed, 2MB max. size per image");
+          setuploading(false);
+        });
+      // setimageUploadError(false);
+    } else {
+      setimageUploadError("Max. 6 images can upload");
+      setuploading(false);
+    }
+  };
+
+  const storeImage = async (file) => {
+    return new Promise((resolve, reject) => {
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + file.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_chnaged",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done !!`);
+        },
+        (error) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  };
+
+  const handleDeleteImage = (index) => {
+    setformData({
+      ...formData,
+      imageUrls: formData.imageUrls.filter((url, i) => index !== i),
+    });
+  };
+
   return (
     <>
       <div className="p-5 max-w-4xl mx-auto">
@@ -13,7 +90,7 @@ export default function CreateListing() {
               type="text"
               name="name"
               id="name"
-              placeholder="name"
+              placeholder="Name"
               maxLength="62"
               minLength="10"
               required
@@ -23,7 +100,7 @@ export default function CreateListing() {
               type="text"
               name="description"
               id="description"
-              placeholder="description"
+              placeholder="Description"
               required
               className="p-3 rounded-lg focus:outline-none"
             />
@@ -31,7 +108,7 @@ export default function CreateListing() {
               type="text"
               name="address"
               id="address"
-              placeholder="address"
+              placeholder="Address"
               required
               className="p-3 rounded-lg focus:outline-none"
             />
@@ -139,15 +216,44 @@ export default function CreateListing() {
               <input
                 type="file"
                 name="images"
+                onChange={(e) => setfiles(e.target.files)}
                 id="images"
                 accept="image/*"
                 multiple
                 className="p-3 border border-gray-300 rounded-lg w-full"
               />
-              <button className="bg-green-700 text-white border border-green-700 font-semibold px-3 uppercase rounded-lg hover:shadow-lg hover:bg-transparent hover:text-green-700 ">
-                Upload
+              <button
+                type="button"
+                disabled={uploading}
+                onClick={handleImageUpload}
+                className="bg-green-700 text-white border border-green-700 font-semibold px-3 uppercase rounded-lg hover:shadow-lg hover:bg-transparent hover:text-green-700 "
+              >
+                {uploading ? "uploading..." : "upload"}
               </button>
             </div>
+            <p className="text-red-600 ">
+              {imageUploadError && imageUploadError}
+            </p>
+            {formData.imageUrls.length > 0 &&
+              formData.imageUrls.map((url, index) => (
+                <div
+                  className="flex items-center justify-between px-5 py-3 border rounded-lg"
+                  key={url}
+                >
+                  <img
+                    src={url}
+                    alt="image"
+                    className="w-20 h-20 object-contain rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteImage(index)}
+                    className="text-red-600 hover:font-semibold"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
             <button className="p-3 bg-slate-700 uppercase text-white rounded-lg hover:opacity-95">
               Create Listing
             </button>
