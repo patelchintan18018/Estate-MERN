@@ -20,6 +20,8 @@ export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const [updateUserData, setupdateUserData] = useState({});
   const [userListings, setuserListings] = useState([]);
+  const [deleteListingError, setdeleteListingError] = useState(false);
+  const [deleteListingLoading, setdeleteListingLoading] = useState(false);
 
   const handleChange = (e) => {
     setupdateUserData({ ...updateUserData, [e.target.name]: e.target.value });
@@ -92,6 +94,30 @@ export default function Profile() {
     }
   };
 
+  const handleDeleteListing = async (id) => {
+    setdeleteListingError(false);
+    setdeleteListingLoading(true);
+    try {
+      const { data } = await axios.delete(`/api/listing/delete/${id}`);
+      console.log(data);
+      if (data.success) {
+        alert(data.message);
+        setuserListings((prev) => prev.filter((list) => list._id !== id));
+        setdeleteListingError(false);
+        setdeleteListingLoading(false);
+      } else {
+        alert(data.message);
+        console.log(data.message);
+        setdeleteListingError(data.message);
+        setdeleteListingLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setdeleteListingError(data.message);
+      setdeleteListingLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="p-3 max-w-lg mx-auto">
@@ -159,34 +185,48 @@ export default function Profile() {
           </span>
         </p>
         <div className="userListings text-center flex flex-col ">
-          {userListings &&
-            userListings.length > 0 &&
-            userListings.map((singleListing) => {
-              return (
-                <div
-                  key={singleListing._id}
-                  className="flex flex-wrap justify-between items-center py-3 px-5 border rounded-lg mt-3 ">
-                    <div className="overflow-hidden rounded-lg">
-                    <Link to={`/listing/${singleListing._id}`} >
-                    <img
-                      src={singleListing.imageUrls[0]}
-                      alt="Hotel image"
-                      className="h-20 w-25 object-contain rounded-lg hover:scale-110 transition-transform duration-500 overflow-hidden"
-                    />
-                  </Link>
-                    </div>
-                  
+          {userListings && userListings.length > 0 && (
+            <div>
+              <p className="text-2xl font-bold mt-7 mb-3 text-slate-700"> <span className="border-b-4 border-slate-700 p-1">Your Listings</span></p>
+              {userListings.map((singleListing) => {
+                return (
+                  <div
+                    key={singleListing._id}
+                    className="flex  justify-between items-center p-4 border rounded-lg mt-5 shadow-2xl "
+                  >
+                    <Link
+                      to={`/listing/${singleListing._id}`}
+                      className="overflow-hidden rounded-lg"
+                    >
+                      <img
+                        src={singleListing.imageUrls[0]}
+                        alt="Hotel image"
+                        className="h-20 w-28 sm:h-24 sm:w-32 object-cover rounded-lg hover:scale-110 transition-transform duration-500 overflow-hidden"
+                      />
+                    </Link>
 
-                  <Link to={`/listing/${singleListing._id}`}><p className="hidden sm:inline-block hover:font-semibold transition-transform duration-300" >{singleListing.name}</p></Link>
-                  
-                  <div className="text-center">
-                    <p className="text-red-600 font-semibold hover:scale-105 transition-transform duration-200">Delete</p>
-                    <p className="text-green-600 font-semibold hover:scale-105 transition-transform duration-200">Edit</p>
+                    <Link to={`/listing/${singleListing._id}`} className="">
+                      <p className="hidden sm:inline-block hover:font-semibold transition-transform duration-300 p-3 truncate">
+                        {singleListing.name}
+                      </p>
+                    </Link>
+
+                    <div className="text-center">
+                      <p
+                        onClick={() => handleDeleteListing(singleListing._id)}
+                        className="text-red-600 font-semibold hover:scale-105 transition-transform duration-200 uppercase"
+                      >
+                        Delete
+                      </p>
+                      <p className="text-green-600 font-semibold hover:scale-105 transition-transform duration-200 uppercase">
+                        Edit
+                      </p>
+                    </div>
                   </div>
-                  
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </>

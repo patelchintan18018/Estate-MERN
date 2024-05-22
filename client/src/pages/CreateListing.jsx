@@ -162,7 +162,7 @@ export default function CreateListing() {
       console.log(data);
       resetForm();
       imagefileInputRef.current.value = null;
-      navigate(`/listing/${data.newListing._id}`);
+      // navigate(`/listing/${data.newListing._id}`);
     } catch (error) {
       setformError(error.message);
       setformLoading(false);
