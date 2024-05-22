@@ -8,6 +8,7 @@ import LogIn from "./pages/LogIn";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateListing from "./pages/CreateListing";
+// import UserListing from "./pages/UserListing";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-listing" element={<CreateListing />} />
+            {/* <Route path="/userListing" element={<UserListing/>} /> */}
           </Route>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />

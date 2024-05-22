@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Link} from "react-router-dom"
-import { 
+import { Link } from "react-router-dom";
+import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
@@ -19,6 +19,7 @@ export default function Profile() {
 
   const { currentUser } = useSelector((state) => state.user);
   const [updateUserData, setupdateUserData] = useState({});
+  const [userListings, setuserListings] = useState([]);
 
   const handleChange = (e) => {
     setupdateUserData({ ...updateUserData, [e.target.name]: e.target.value });
@@ -37,7 +38,7 @@ export default function Profile() {
       if (data.success) {
         alert(data.message);
         dispatch(updateUserSuccess(data.userData));
-        console.log(data)
+        console.log(data);
       } else {
         alert(data.message);
         dispatch(updateUserFailure(data));
@@ -47,37 +48,49 @@ export default function Profile() {
     }
   };
 
-  const handleDelete = async() =>{
+  const handleDelete = async () => {
     try {
-      dispatch(deleteUserStart())
-      const {data} = await axios.delete(`/api/user/delete/${currentUser._id}`)
-      if(data.success){
+      dispatch(deleteUserStart());
+      const { data } = await axios.delete(
+        `/api/user/delete/${currentUser._id}`
+      );
+      if (data.success) {
         dispatch(deleteUserSuccess());
         alert(data.message);
-      }else{
+      } else {
         dispatch(deleteUserFailure(data));
-        alert(data.message)
+        alert(data.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const handleSignOut = async() =>{
+  const handleSignOut = async () => {
     try {
       dispatch(signoutUserStart());
-      const {data} = await axios.get('/api/signout');
-      if(data.success){
+      const { data } = await axios.get("/api/signout");
+      if (data.success) {
         alert(data.message);
-        dispatch(signoutUserSuccess())
-      }else{
+        dispatch(signoutUserSuccess());
+      } else {
         alert(data.message);
-        dispatch(signoutUserFailure(data.message))
+        dispatch(signoutUserFailure(data.message));
       }
+    } catch (error) {}
+  };
+
+  const getUserListings = async () => {
+    try {
+      const { data } = await axios.get(
+        `/api/user/userListing/${currentUser._id}`
+      );
+      console.log(data);
+      setuserListings(data);
     } catch (error) {
-      
+      console.log(error);
     }
-  }
+  };
 
   return (
     <>
@@ -89,7 +102,11 @@ export default function Profile() {
           <img
             className="w-24 h-24 object-cover self-center rounded-full cursor-pointer"
             src={currentUser.photoURL}
-            onError={(e) => {e.target.onError=null; e.target.src ='https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png'}}
+            onError={(e) => {
+              e.target.onError = null;
+              e.target.src =
+                "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png";
+            }}
             alt="profile-image"
           />
           <input
@@ -118,14 +135,58 @@ export default function Profile() {
             placeholder="password"
             className="p-3 focus:outline-none rounded-lg"
           />
-          <button className="p-3 bg-slate-700 uppercase hover:opacity-95 text-white rounded-lg">
+          <button className="p-3 bg-slate-700 uppercase hover:opacity-90 text-white rounded-lg">
             update
           </button>
-          <Link to='/create-listing' className="p-3 bg-green-700 rounded-lg text-white uppercase text-center hover:opacity-95">Create Listing</Link>
+          <Link
+            to="/create-listing"
+            className="p-3 bg-green-700 rounded-lg text-white uppercase text-center hover:opacity-90"
+          >
+            Create Listing
+          </Link>
         </form>
         <div className="flex justify-between text-red-600 my-5 font-semibold cursor-pointer">
-          <span onClick={handleDelete} className="hover:scale-105">Delete account</span>
-          <span onClick={handleSignOut} className="hover:scale-105">Sign out</span>
+          <span onClick={handleDelete} className="hover:scale-105">
+            Delete account
+          </span>
+          <span onClick={handleSignOut} className="hover:scale-105">
+            Sign out
+          </span>
+        </div>
+        <p className="flex justify-center text-green-700 font-semibold cursor-pointer">
+          <span className="hover:scale-105" onClick={getUserListings}>
+            Show listing
+          </span>
+        </p>
+        <div className="userListings text-center flex flex-col ">
+          {userListings &&
+            userListings.length > 0 &&
+            userListings.map((singleListing) => {
+              return (
+                <div
+                  key={singleListing._id}
+                  className="flex flex-wrap justify-between items-center py-3 px-5 border rounded-lg mt-3 ">
+                    <div className="overflow-hidden rounded-lg">
+                    <Link to={`/listing/${singleListing._id}`} >
+                    <img
+                      src={singleListing.imageUrls[0]}
+                      alt="Hotel image"
+                      className="h-20 w-25 object-contain rounded-lg hover:scale-110 transition-transform duration-500 overflow-hidden"
+                    />
+                  </Link>
+                    </div>
+                  
+
+                  <Link to={`/listing/${singleListing._id}`}><p className="hidden sm:inline-block hover:font-semibold transition-transform duration-300" >{singleListing.name}</p></Link>
+                  
+                  <div className="text-center">
+                    <p className="text-red-600 font-semibold hover:scale-105 transition-transform duration-200">Delete</p>
+                    <p className="text-green-600 font-semibold hover:scale-105 transition-transform duration-200">Edit</p>
+                  </div>
+                  
+                </div>
+              );
+            })}
         </div>
       </div>
     </>
