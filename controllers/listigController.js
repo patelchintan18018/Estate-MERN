@@ -23,4 +23,16 @@ exports.deleteUserListing = async(req,res,next) => {
     } catch (error) {
         next(error)
     }
+};
+
+exports.getListing = async(req,res,next) => {
+    
+
+    try {
+        const listing = await Listing.findById(req.params.id);
+    if(!listing){return next(errorHandler(404, "Lising not found"))}
+    res.status(200).json({success:true,message:"Fetched listing successfully", listing})
+    } catch (error) {
+        next(error)
+    }
 }
