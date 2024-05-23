@@ -65,7 +65,7 @@ export default function CreateListing() {
           setuploading(false);
         })
         .catch((err) => {
-          setimageUploadError("Image upload failed, 2MB max. size per image");
+          setimageUploadError("Image upload failed, 10MB max. size per image");
           setuploading(false);
         });
       setimageUploadError(false);
@@ -144,7 +144,14 @@ export default function CreateListing() {
     try {
       if (formData.imageUrls.length < 1)
         return setformError("You must upload at least one image");
-      if (formData.regularPrice < formData.discountPrice)
+
+      console.log("Offer:", formData.offer);
+    console.log("Regular Price:", formData.regularPrice);
+    console.log("Discount Price:", formData.discountPrice);
+    const isDiscountLessThanRegular = formData.regularPrice < formData.discountPrice;
+    console.log("Is discount less than regular price?", isDiscountLessThanRegular);
+
+      if (formData.offer && +formData.regularPrice < +formData.discountPrice)
         return setformError("Discounted price must be less than regular price");
 
       setformLoading(true);
@@ -160,9 +167,9 @@ export default function CreateListing() {
 
       alert(data.message);
       console.log(data);
-      resetForm();
       imagefileInputRef.current.value = null;
       navigate(`/listing/${data.newListing._id}`);
+      resetForm();
     } catch (error) {
       setformError(error.message);
       setformLoading(false);
@@ -185,7 +192,7 @@ export default function CreateListing() {
               name="name"
               id="name"
               placeholder="Name"
-              maxLength="62"
+              maxLength="100"
               minLength="10"
               required
               className="p-3 rounded-lg focus:outline-none"
@@ -278,7 +285,7 @@ export default function CreateListing() {
                   name="bedrooms"
                   id="bedrooms"
                   min="1"
-                  max="10"
+                  max="50"
                   required
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none"
                   value={formData.bedrooms}
@@ -292,7 +299,7 @@ export default function CreateListing() {
                   name="bathrooms"
                   id="bathrooms"
                   min="1"
-                  max="10"
+                  max="50"
                   required
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none"
                   value={formData.bathrooms}
@@ -365,7 +372,7 @@ export default function CreateListing() {
                 type="button"
                 disabled={uploading}
                 onClick={handleImageUpload}
-                className="bg-green-700 text-white border border-green-700 font-semibold px-3 uppercase rounded-lg hover:shadow-lg hover:bg-transparent hover:text-green-700 "
+                className="bg-green-700 text-white border border-green-700 font-semibold px-3 uppercase rounded-lg hover:shadow-lg disabled:opacity-90"
               >
                 {uploading ? "uploading..." : "upload"}
               </button>
