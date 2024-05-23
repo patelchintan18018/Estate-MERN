@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   updateUserStart,
   updateUserSuccess,
@@ -16,6 +16,7 @@ import axios from "axios";
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const { currentUser } = useSelector((state) => state.user);
   const [updateUserData, setupdateUserData] = useState({});
