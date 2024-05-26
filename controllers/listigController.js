@@ -90,7 +90,7 @@ exports.getsearchListings = async (req, res, next) => {
       .limit(limit)
       .skip(startIndex);
 
-    return res.status(200).json(searchlistings);
+    return res.status(200).json({success:true, message:'Listing fetched', searchlistings});
   } catch (error) {
     next(error);
   }

@@ -64,8 +64,8 @@ export default function Header() {
             >
               <li>About</li>
             </Link>
-            <Link to="/profile">
-              {currentUser ? (
+            {currentUser ? (
+              <Link to="/profile">
                 <img
                   className="w-7 h-7 lg:w-10 lg:h-10 rounded-full object-cover"
                   src={currentUser.photoURL}
@@ -76,15 +76,15 @@ export default function Header() {
                       "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png";
                   }}
                 />
-              ) : (
-                <Link
-                  to="/signup"
-                  className="text-slate-700 font-semibold hover:font-bold"
-                >
-                  <li>Sign In</li>
-                </Link>
-              )}
-            </Link>
+              </Link>
+            ) : (
+              <Link
+                to="/signup"
+                className="text-slate-700 font-semibold hover:font-bold"
+              >
+                <li>Sign In</li>
+              </Link>
+            )}
           </ul>
         </div>
       </header>

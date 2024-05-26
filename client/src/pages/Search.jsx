@@ -1,9 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Card from "../components/Card";
 
 export default function Search() {
   const navigate = useNavigate();
+  const [searchLoading, setsearchLoading] = useState(false);
+  const [searchError, setsearchError] = useState(false);
+  const [searchlistings, setsearchlistings] = useState([]);
+
   const [sidebardata, setSidebardata] = useState({
     searchTerm: "",
     type: "all",
@@ -14,7 +19,7 @@ export default function Search() {
     order: "desc",
   });
 
-  console.log(sidebardata);
+  // console.log(sidebardata);
 
   const handleChange = (e) => {
     if (
@@ -84,28 +89,42 @@ export default function Search() {
       sortFromUrl ||
       orderFromUrl
     ) {
-      setSidebardata({...sidebardata,
-        searchTerm: searchTermFromUrl || '',
-        type: typeFromUrl || 'all',
-        parking: parkingFromUrl==='true'?true:false,
-        furnished: furnishedFromUrl==='true'?true:false,
-        offer: offerFromUrl==='true'?true:false,
-        sort: sortFromUrl || 'createdAt',
-        order: orderFromUrl || 'desc',
+      setSidebardata({
+        ...sidebardata,
+        searchTerm: searchTermFromUrl || "",
+        type: typeFromUrl || "all",
+        parking: parkingFromUrl === "true" ? true : false,
+        furnished: furnishedFromUrl === "true" ? true : false,
+        offer: offerFromUrl === "true" ? true : false,
+        sort: sortFromUrl || "createdAt",
+        order: orderFromUrl || "desc",
       });
     }
 
-    const fetchListings = async() =>{
-        const searchQuery = urlParams.toString()
-        try {
-           const {data} = await axios.get(`/api/listing/get?${searchQuery}`) 
-           console.log(data)
-        } catch (error) {
-console.log(error)
+    const fetchListings = async () => {
+      const searchQuery = urlParams.toString();
+      setsearchLoading(true);
+      setsearchError(true);
+      try {
+        const { data } = await axios.get(`/api/listing/get?${searchQuery}`);
+        if (!data.success) {
+          setsearchError(data.error.message);
+          setsearchLoading(false);
         }
-    }
-fetchListings()
+        setsearchlistings(data.searchlistings);
+        // console.log(data.searchlistings)
+        setsearchError(false);
+        setsearchLoading(false);
+      } catch (error) {
+        console.log(error);
+        setsearchLoading(false);
+        setsearchError(error.message);
+      }
+    };
+    fetchListings();
   }, [location.search]);
+
+  console.log(searchlistings);
 
   return (
     <main className="flex flex-col md:flex-row">
@@ -221,6 +240,24 @@ fetchListings()
         <h1 className="font-bold text-2xl border-b-8 w-full p-5 border-slate-200  text-slate-700">
           Listing results :
         </h1>
+        <div className="searchlistings ">
+          <div className="flex items-center justify-center p-5">
+            {!searchLoading && searchlistings.length === 0 && <p className="font-bold text-2xl text-center text-slate-700">No listing found ...</p>}
+            {searchLoading && <p className="font-bold text-2xl text-center text-slate-700">Loading ...</p>}
+          </div>
+          <div className="flex flex-wrap justify-center p-5 gap-3">
+          {searchlistings.map((singlesearchlistings) => {
+            return (
+              <Card
+                key={singlesearchlistings._id}
+                singlesearchlistings={singlesearchlistings}
+              />
+            );
+          })}
+          </div>
+        </div>
+
+        {/* <p className="text-green-600 font-semibold p-5">Show more ...</p> */}
       </div>
     </main>
   );
