@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateListing from "./pages/CreateListing";
 import UserListing from "./pages/UserListing";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -18,14 +19,14 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/listing/:listingId" element={<UserListing/>} />
+          <Route path="/listing/:listingId" element={<UserListing />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-listing" element={<CreateListing />} />
-            
           </Route>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
+          <Route path="/search" element={<Search/>}/>
         </Routes>
       </BrowserRouter>
     </>
