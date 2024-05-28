@@ -8,6 +8,7 @@ export default function Search() {
   const [searchLoading, setsearchLoading] = useState(false);
   const [searchError, setsearchError] = useState(false);
   const [searchlistings, setsearchlistings] = useState([]);
+  const [showMore, setshowMore] = useState(false);
 
   const [sidebardata, setSidebardata] = useState({
     searchTerm: "",
@@ -105,13 +106,22 @@ export default function Search() {
       const searchQuery = urlParams.toString();
       setsearchLoading(true);
       setsearchError(true);
+      setshowMore(false);
       try {
         const { data } = await axios.get(`/api/listing/get?${searchQuery}`);
         if (!data.success) {
           setsearchError(data.error.message);
           setsearchLoading(false);
+          return;
         }
+
         setsearchlistings(data.searchlistings);
+
+        if (data.searchlistings.length > 8) {
+          setshowMore(true);
+        } else {
+          setshowMore(false);
+        }
         // console.log(data.searchlistings)
         setsearchError(false);
         setsearchLoading(false);
@@ -125,6 +135,19 @@ export default function Search() {
   }, [location.search]);
 
   console.log(searchlistings);
+
+  const onClickShowMore = async() => {
+    const startIndex = searchlistings.length;
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('startIndex', startIndex);
+    const searchQuery = urlParams.toString();
+    const {data} = await axios.get(`/api/listing/get?${searchQuery}`);
+
+    console.log(data.searchlistings)
+    if(data.searchlistings.length < 9 ){setshowMore(false)}
+
+    setsearchlistings([...searchlistings, ...data.searchlistings])
+  }
 
   return (
     <main className="flex flex-col md:flex-row">
@@ -242,22 +265,31 @@ export default function Search() {
         </h1>
         <div className="searchlistings ">
           <div className="flex items-center justify-center p-5">
-            {!searchLoading && searchlistings.length === 0 && <p className="font-bold text-2xl text-center text-slate-700">No listing found ...</p>}
-            {searchLoading && <p className="font-bold text-2xl text-center text-slate-700">Loading ...</p>}
+            {!searchLoading && searchlistings.length === 0 && (
+              <p className="font-bold text-2xl text-center text-slate-700">
+                No listing found ...
+              </p>
+            )}
+            {searchLoading && (
+              <p className="font-bold text-2xl text-center text-slate-700">
+                Loading ...
+              </p>
+            )}
           </div>
-          <div className="flex flex-wrap justify-center p-5 gap-3">
-          {searchlistings.map((singlesearchlistings) => {
-            return (
-              <Card
-                key={singlesearchlistings._id}
-                singlesearchlistings={singlesearchlistings}
-              />
-            );
-          })}
+          <div className="flex flex-wrap justify-center p-5 gap-5">
+            {searchlistings.map((singlesearchlistings) => {
+              return (
+                <Card
+                  key={singlesearchlistings._id}
+                  singlesearchlistings={singlesearchlistings}
+                />
+              );
+            })}
           </div>
+          {showMore && (
+            <p className="text-green-600 font-semibold p-5 w-full text-center"><span className="hover:font-bold" onClick={onClickShowMore}>Show more ...</span></p>
+          )}
         </div>
-
-        {/* <p className="text-green-600 font-semibold p-5">Show more ...</p> */}
       </div>
     </main>
   );

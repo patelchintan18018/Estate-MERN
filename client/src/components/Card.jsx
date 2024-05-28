@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 
 export default function Card({ singlesearchlistings }) {
   return (
-    <div className="singlesearchlistings shadow-lg rounded-lg overflow-hidden w-full sm:w-[310px]">
+    <div className="singlesearchlistings shadow-lg rounded-lg overflow-hidden w-full sm:w-[300px] lg:w-[310px]">
       <Link to={`/listing/${singlesearchlistings._id}`} className="">
         <div className="overflow-hidden">
 
         <img
           src={singlesearchlistings.imageUrls[0]}
           alt="Hotel image"
-          className="object-cover hover:scale-110 transition-all duration-300 h-[320px] sm:h-[220px] w-full"
+          className="object-cover hover:scale-110 transition-all duration-500 h-[320px] sm:h-[220px] w-full"
         />
         </div>
         <div className="p-5 flex flex-col gap-2">

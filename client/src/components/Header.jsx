@@ -30,7 +30,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-slate-200">
+      <header className="bg-slate-200 shadow-lg">
         <div className="flex justify-between items-center mx-auto p-3 max-w-6xl">
           <h1 className="font-bold flex-wrap sm:text-2xl">
             <span className="text-slate-500">Sahand</span>
