@@ -32,10 +32,10 @@ export default function Header() {
     <>
       <header className="bg-slate-200 shadow-lg">
         <div className="flex justify-between items-center mx-auto p-3 max-w-6xl">
-          <h1 className="font-bold flex-wrap sm:text-2xl">
+          <Link to='/' className="font-bold flex-wrap sm:text-2xl">
             <span className="text-slate-500">Sahand</span>
             <span className="text-slate-700">Estate</span>
-          </h1>
+          </Link>
           <form
             onSubmit={handleSubmit}
             className="bg-slate-100 flex p-3 items-center rounded-lg "
