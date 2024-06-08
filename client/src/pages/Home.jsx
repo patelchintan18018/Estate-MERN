@@ -96,7 +96,7 @@ export default function Home() {
           <div>
 
           {offerListings && offerListings.length > 0 && (
-            <div className="flex flex-wrap gap-5 justify-center items-center">
+            <div className="flex flex-wrap gap-5 justify-center items-center md:justify-start">
               {offerListings.map((listing) => (
                 <Card key={listing._id} singlesearchlistings={listing} />
               ))}
@@ -113,7 +113,7 @@ export default function Home() {
           <div>
 
           {rentListings && rentListings.length > 0 && (
-            <div className="flex flex-wrap gap-5 ">
+            <div className="flex flex-wrap gap-5 justify-center items-center md:justify-start">
               {rentListings.map((listing) => (
                 <Card key={listing._id} singlesearchlistings={listing} />
               ))}
@@ -122,14 +122,14 @@ export default function Home() {
           </div>
         </div>
         <div className="sell-listing flex flex-col justify-start p-5 gap-5">
-          <div className="">
+          <div className="text-center md:text-left">
             <p className="font-bold text-slate-700 text-xl">Recent places for sell</p>
             <Link to={`/search?type=sell`} className="text-sm">Show more places for sell</Link>
           </div>
           <div>
 
           {sellListings && sellListings.length > 0 && (
-            <div className="flex flex-wrap gap-5 ">
+            <div className="flex flex-wrap gap-5 justify-center items-center md:justify-start">
               {sellListings.map((listing) => (
                 <Card key={listing._id} singlesearchlistings={listing} />
               ))}
