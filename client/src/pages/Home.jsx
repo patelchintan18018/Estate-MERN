@@ -96,7 +96,7 @@ export default function Home() {
           <div>
 
           {offerListings && offerListings.length > 0 && (
-            <div className="flex flex-wrap gap-5 ">
+            <div className="flex flex-wrap gap-5 justify-center items-center">
               {offerListings.map((listing) => (
                 <Card key={listing._id} singlesearchlistings={listing} />
               ))}
