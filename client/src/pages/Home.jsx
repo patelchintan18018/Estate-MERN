@@ -89,7 +89,7 @@ export default function Home() {
       </div>
       <div className="various-listings flex flex-col gap-10 p-10">
         <div className="offer-listing flex flex-col justify-start p-5 gap-5">
-          <div className="">
+          <div className="text-center md:text-left">
             <p className="font-bold text-slate-700 text-xl">Recent offers</p>
             <Link to={`/search?offer=true`} className="text-sm">Show more offers</Link>
           </div>
@@ -106,7 +106,7 @@ export default function Home() {
         </div>
 
         <div className="rent-listing flex flex-col justify-start p-5 gap-5">
-          <div className="">
+          <div className="text-center md:text-left">
             <p className="font-bold text-slate-700 text-xl">Recent places for rent</p>
             <Link to={`/search?type=rent`} className="text-sm">Show more places for rent</Link>
           </div>
