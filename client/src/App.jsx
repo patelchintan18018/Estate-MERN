@@ -12,6 +12,8 @@ import UserListing from "./pages/UserListing";
 import Search from "./pages/Search";
 import Footer from "./components/Footer";
 import BlogPage from "./pages/BlogPage";
+import FAQ from './pages/FAQ'
+
 
 export default function App() {
   return (
@@ -30,6 +32,7 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/search" element={<Search/>}/>
           <Route path="/blog" element={<BlogPage/>} />
+          <Route path="/FAQ" element={<FAQ/>} />
         </Routes>
         <Footer/>
       </BrowserRouter>
