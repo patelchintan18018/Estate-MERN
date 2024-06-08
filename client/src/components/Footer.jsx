@@ -8,15 +8,15 @@ const Footer = () => {
         <div className="mb-4 md:mb-0 flex-1">
           <p>&copy; 2024 My Company. All rights reserved.</p>
           {/* <p>Contact us: <FaEnvelope /> email@example.com | <FaPhone /> +1 234 567 890</p> */}
-          <p>Contact us :</p>
+          <p className='mt-5'>Contact us :</p>
           <p className='flex gap-4 items-center'><FaEnvelope /> email@example.com</p>
           <p className='flex gap-4 items-center'><FaPhone /> +1 234 567 890</p>
         </div>
         <nav className="mb-4 md:mb-0 flex-1">
           <ul className="flex flex-row space-y-2 md:space-y-0 md:space-x-4 justify-center items-start">
-            <li><a href="/about" className="hover:text-white hover:scale-110 transition-all duration-300 ease-in-out">About</a></li>
-            <li><a href="/contact" className="hover:text-white hover:scale-110 transition-all duration-300 ease-in-out">Contact</a></li>
-            <li><a href="/faq" className="hover:text-white hover:scale-110 transition-all duration-300 ease-in-out">FAQ</a></li>
+            <li><Link to="/about" className="hover:text-white hover:scale-110 transition-all duration-300 ease-in-out">About</Link></li>
+            <li><Link to="/blog" className="hover:text-white hover:scale-110 transition-all duration-300 ease-in-out">Blog</Link></li>
+            <li><Link to="/faq" className="hover:text-white hover:scale-110 transition-all duration-300 ease-in-out">FAQ</Link></li>
           </ul>
         </nav>
         <div className="flex space-x-4 flex-1 justify-center items-start">
