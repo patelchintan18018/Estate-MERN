@@ -4,17 +4,18 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone } f
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-6">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-5">
         <div className="mb-4 md:mb-0">
           <p>&copy; 2024 My Company. All rights reserved.</p>
-          <p>Contact us: <FaEnvelope /> email@example.com | <FaPhone /> +1 234 567 890</p>
+          {/* <p>Contact us: <FaEnvelope /> email@example.com | <FaPhone /> +1 234 567 890</p> */}
+          <p>Contact us :</p>
+          <p><FaEnvelope /> email@example.com</p>
+          <p><FaPhone /> +1 234 567 890</p>
         </div>
         <nav className="mb-4 md:mb-0">
           <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
             <li><a href="/about" className="hover:underline">About</a></li>
             <li><a href="/contact" className="hover:underline">Contact</a></li>
-            <li><a href="/privacy" className="hover:underline">Privacy Policy</a></li>
-            <li><a href="/terms" className="hover:underline">Terms of Service</a></li>
             <li><a href="/faq" className="hover:underline">FAQ</a></li>
           </ul>
         </nav>
