@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CreateListing from "./pages/CreateListing";
 import UserListing from "./pages/UserListing";
 import Search from "./pages/Search";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/search" element={<Search/>}/>
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </>
   );
