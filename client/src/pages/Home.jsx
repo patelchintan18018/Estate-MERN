@@ -32,7 +32,7 @@ export default function Home() {
 
     const fetchRentListings = async () => {
       try {
-        const { data } = await axios.get(`/api/listing/get?type=rent&limit=4`);
+        const { data } = await axios.get(`/api/listing/get?type=rent&limit=6`);
         setrentListings(data.searchlistings);
         fetchSellListings();
       } catch (error) {
@@ -41,7 +41,7 @@ export default function Home() {
     };
     const fetchSellListings = async () => {
       try {
-        const { data } = await axios.get(`/api/listing/get?type=sell&limit=4`);
+        const { data } = await axios.get(`/api/listing/get?type=sell&limit=6`);
         setsellListings(data.searchlistings);
       } catch (error) {
         console.log(error);
