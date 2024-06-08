@@ -9,8 +9,8 @@ const Footer = () => {
           <p>&copy; 2024 My Company. All rights reserved.</p>
           {/* <p>Contact us: <FaEnvelope /> email@example.com | <FaPhone /> +1 234 567 890</p> */}
           <p>Contact us :</p>
-          <p><FaEnvelope /> email@example.com</p>
-          <p><FaPhone /> +1 234 567 890</p>
+          <p className='flex gap-4 items-center'><FaEnvelope /> email@example.com</p>
+          <p className='flex gap-4 items-center'><FaPhone /> +1 234 567 890</p>
         </div>
         <nav className="mb-4 md:mb-0">
           <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
